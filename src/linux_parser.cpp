@@ -268,15 +268,21 @@ string LinuxParser::User(int pid) {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) {
   string line;
-  long d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21;
-  long val;
+  string val;
+  int i{1};
   std::ifstream stream(kProcDirectory+to_string(pid)+kStatFilename);
   if (stream.is_open()){
     while(std::getline(stream,line)){
       std::istringstream linestream(line);
-      linestream >> d1 >> d2 >> d3 >> d4 >> d5 >> d6 >> d7 >> d8 >> d9 >> d10 >> d11 >> d12 >> d13 >> d14 >> d15 >> d16 >> d17 >> d18 >> d19 >> d20 >> d21 >> val;
-      return (val/sysconf(_SC_CLK_TCK));
+      while (linestream >> val)
+      {
+        if (i == 22) {
+          //std::cout << std::stol(val)/sysconf(_SC_CLK_TCK) << std::endl;
+          return (std::stol(val)/sysconf(_SC_CLK_TCK));
+        }
+        ++i;
+      }
     }
   }
-  return (val/sysconf(_SC_CLK_TCK));
+  return (std::stol(val)/sysconf(_SC_CLK_TCK));
 }

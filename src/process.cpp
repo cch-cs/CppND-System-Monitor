@@ -20,38 +20,37 @@ int Process::Pid() {
 
 // TODO: Return this process's CPU utilization
 float Process::CpuUtilization() const {
-  string line;
-    float d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13;
+    string line;
+    string val;
+    int i{0};
     float utime, stime, cutime, cstime;
     float totaltime;
+    float temp;
+    float seconds;
     std::ifstream stream(LinuxParser::kProcDirectory + to_string(_pid) + LinuxParser::kStatFilename);
     if (stream.is_open()){
         while(std::getline(stream,line)){
             std::istringstream linestream(line);
-            linestream >> d1 >> d2 >> d3 >> d4 >> d5 >> d6 >> d7 >> d8 >> d9 >> d10 >> d11 >> d12 >> d13 >> utime >> stime >> cutime >> cstime;
-            totaltime = utime + stime + cutime + cstime;
-            //return (totaltime/sysconf(_SC_CLK_TCK)/UpTime());
-           // std::cout << totaltime << std::endl;
-            return (totaltime/sysconf(_SC_CLK_TCK)/UpTime());
-            // return (totaltime);
-            /*
-            while (linestream >> val)
-            {
+            while (linestream >> val) {
                 if (i == 14) {
-                    utime = val;
-                    linestream >> stime >> cutime >> cstime;
+                    utime = std::stof(val);
+                    linestream >> val;
+                    stime = std::stof(val);
+                    linestream >> val;
+                    cutime = std::stof(val);
+                    linestream >> val;
+                    cstime = std::stof(val);
                     totaltime = utime + stime + cutime + cstime;
-                    //return (totaltime/sysconf(_SC_CLK_TCK)/UpTime());
-                    return (totaltime);
+                    temp = totaltime/sysconf(_SC_CLK_TCK);
+                    seconds = LinuxParser::UpTime() - UpTime();
+                    //std::cout << temp/seconds << std::endl;
+                    return (temp/seconds);
                 }
-                std::cout << i << std::endl;
                 ++i;
-            } */  
+            }
         }
     }
-    // return (totaltime/sysconf(_SC_CLK_TCK)/UpTime());
-    //std::cout << totaltime << std::endl;
-    //return (totaltime);
+    return (totaltime/sysconf(_SC_CLK_TCK)/UpTime());
 }
 
 
