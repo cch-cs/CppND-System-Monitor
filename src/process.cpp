@@ -10,11 +10,12 @@ using std::string;
 using std::to_string;
 using std::vector;
 
+#include <iostream>
+
 Process::Process(int pid):_pid(pid){}
 // TODO: Return this process's ID
 int Process::Pid() {
-    //return _pid;
-    return 0;
+    return _pid;
 }
 
 // TODO: Return this process's CPU utilization
@@ -46,22 +47,22 @@ float Process::CpuUtilization() {
 
 // TODO: Return the command that generated this process
 string Process::Command() {
-    return LinuxParser::Command(Pid());
+    return LinuxParser::Command(_pid);
 }
 
 // TODO: Return this process's memory utilization
 string Process::Ram() {
-    return LinuxParser::Ram(Pid());
+    return LinuxParser::Ram(_pid);
 }
 
 // TODO: Return the user (name) that generated this process
 string Process::User() {
-    return LinuxParser::User(Pid());
+    return LinuxParser::User(_pid);
 }
 
 // TODO: Return the age of this process (in seconds)
 long int Process::UpTime() {
-    return LinuxParser::UpTime(Pid());
+    return LinuxParser::UpTime(_pid);
 }
 
 // TODO: Overload the "less than" comparison operator for Process objects
