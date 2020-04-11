@@ -10,8 +10,6 @@ using std::string;
 using std::to_string;
 using std::vector;
 
-#include <iostream>
-
 // DONE: An example of how to read data from the filesystem
 string LinuxParser::OperatingSystem() {
   string line;
@@ -277,7 +275,6 @@ long LinuxParser::UpTime(int pid) {
       while (linestream >> val)
       {
         if (i == 22) {
-          //std::cout << std::stol(val)/sysconf(_SC_CLK_TCK) << std::endl;
           return (std::stol(val)/sysconf(_SC_CLK_TCK));
         }
         ++i;

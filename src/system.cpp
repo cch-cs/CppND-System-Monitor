@@ -14,6 +14,8 @@ using std::size_t;
 using std::string;
 using std::vector;
 
+#include <algorithm>
+
 // TODO: Return the system's CPU
 Processor& System::Cpu() {
     return cpu_;
@@ -22,11 +24,14 @@ Processor& System::Cpu() {
 // TODO: Return a container composed of the system's processes
 vector<Process>& System::Processes() {
     vector<int> pids = LinuxParser::Pids();
+    processes_ = {};
     for (int pid : pids){
         Process process_(pid);
         processes_.emplace_back(process_);
     }
-    std::sort(processes_.begin(),processes_.end(),[](Process a, Process b) {return a.operator<(b);});
+    std::sort(processes_.begin(),processes_.end(),[](Process a, Process b) {return b.operator<(a);});
+    for (int i = 0; i < processes_.size();i++) {
+    }
     return processes_;
     }
 
