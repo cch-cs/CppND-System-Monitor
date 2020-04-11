@@ -87,6 +87,7 @@ float LinuxParser::MemoryUtilization() {
         }
         if (key == "MemFree"){
           Memfree =  value;
+      
           return ((Memtotal - Memfree)/Memtotal);
         }
       }
@@ -105,6 +106,7 @@ long LinuxParser::UpTime() {
     while (std::getline(stream,line)){
       std::istringstream linestream(line);
       linestream >> a >> b;
+  
       return a+b;
     }
   }
@@ -150,6 +152,7 @@ int LinuxParser::TotalProcesses() {
       std::istringstream linestream(line);
       while(linestream >> key >> value){
         if (key == "processes"){
+      
           return value;
         }
       }
@@ -169,6 +172,7 @@ int LinuxParser::RunningProcesses() {
       std::istringstream linestream(line);
       while(linestream >> key >> value){
         if (key == "procs_running"){
+      
           return value;
         }
       }
@@ -204,8 +208,10 @@ string LinuxParser::Ram(int pid) {
       std::istringstream linestream(line);
       while (linestream >> key >> value)
       {
-        if (key == "VmSize")
+        if (key == "VmSize"){
+      
           return to_string(value/1000);
+        }
       }
     }
   }
@@ -225,8 +231,10 @@ string LinuxParser::Uid(int pid) {
       std::istringstream linestream(line);
       while (linestream >> key >> value)
       {
-        if (key == "Uid")
+        if (key == "Uid"){
+      
           return to_string(value);
+        }
       }
     }
   }
@@ -247,8 +255,10 @@ string LinuxParser::User(int pid) {
       std::replace(line.begin(),line.end(),':',' ');
       std::istringstream linestream(line);
       linestream >> value >> dummy >> key;
-      if (key == Uid(pid))
+      if (key == Uid(pid)){
+    
         return value;
+      }
     }
   }
   return value;
@@ -258,20 +268,15 @@ string LinuxParser::User(int pid) {
 // REMOVE: [[maybe_unused]] once you define the function
 long LinuxParser::UpTime(int pid) {
   string line;
-  long value;
-  int i{1};
+  long d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16, d17, d18, d19, d20, d21;
+  long val;
   std::ifstream stream(kProcDirectory+to_string(pid)+kStatFilename);
   if (stream.is_open()){
     while(std::getline(stream,line)){
       std::istringstream linestream(line);
-      while (linestream >> value)
-      {
-        if (i == 22){
-          return (value/sysconf(_SC_CLK_TCK));
-        }
-        ++i;
-      }
+      linestream >> d1 >> d2 >> d3 >> d4 >> d5 >> d6 >> d7 >> d8 >> d9 >> d10 >> d11 >> d12 >> d13 >> d14 >> d15 >> d16 >> d17 >> d18 >> d19 >> d20 >> d21 >> val;
+      return (val/sysconf(_SC_CLK_TCK));
     }
   }
-  return (value/sysconf(_SC_CLK_TCK));
+  return (val/sysconf(_SC_CLK_TCK));
 }
